@@ -9,7 +9,7 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     fun logging() {
-        Log.i(TAG, "Hello, world!")
+        Log.v(TAG, "Hello, world!")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
