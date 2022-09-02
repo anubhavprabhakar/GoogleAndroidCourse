@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import java.lang.System.exit
 
 class MainActivity : AppCompatActivity() {
 
@@ -105,13 +106,14 @@ class MainActivity : AppCompatActivity() {
             lemonadeState = SQUEEZE
             lemonSize = lemonTree.pick()
             squeezeCount = 0
+
         }
 
         // TODO: When the image is clicked in the SQUEEZE state the squeezeCount needs to be
         //  INCREASED by 1 and lemonSize needs to be DECREASED by 1.
         //  - If the lemonSize has reached 0, it has been juiced and the state should become DRINK
         //  - Additionally, lemonSize is no longer relevant and should be set to -1
-        if(lemonadeState == SQUEEZE){
+        else if(lemonadeState == SQUEEZE){
             if(lemonSize==0){
                 lemonadeState=DRINK
             }
@@ -122,24 +124,24 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
         // TODO: When the image is clicked in the DRINK state the state should become RESTART
-        if(lemonadeState == DRINK){
+        else if(lemonadeState == DRINK){
             lemonadeState = RESTART
             lemonSize = -1
+
         }
 
 
 
         // TODO: When the image is clicked in the RESTART state the state should become SELECT
-        if(lemonadeState == RESTART){
+        else if(lemonadeState == RESTART){
             lemonadeState = SELECT
+
         }
-
-
 
         // TODO: lastly, before the function terminates we need to set the view elements so that the
         //  UI can reflect the correct state
+        setViewElements()
 
     }
 
@@ -149,13 +151,36 @@ class MainActivity : AppCompatActivity() {
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
         // TODO: set up a conditional that tracks the lemonadeState
+        var drawableResource = R.drawable.lemon_tree
+        var stringResource = resources.getString(R.string.lemon_select)
+
+        //logic to roll dice when requested, and set drawable resource to the image of number rolled
+
+            drawableResource = when (lemonadeState) {
+                SELECT -> R.drawable.lemon_tree
+                SQUEEZE -> R.drawable.lemon_squeeze
+                DRINK -> R.drawable.lemon_drink
+                else -> R.drawable.lemon_restart
+            }
 
         // TODO: for each state, the textAction TextView should be set to the corresponding string from
         //  the string resources file. The strings are named to match the state
 
+        stringResource = when(lemonadeState){
+            SELECT -> resources.getString(R.string.lemon_select)
+            SQUEEZE -> resources.getString(R.string.lemon_squeeze)
+            DRINK -> resources.getString(R.string.lemon_drink)
+            else -> resources.getString(R.string.lemon_empty_glass)
+        }
+        textAction.text = stringResource
+
+
         // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
         //  drawable from the drawable resources. The drawables have the same names as the strings
         //  but remember that they are drawables, not strings.
+        lemonImage?.setImageResource(drawableResource)
+
+
     }
 
     /**
